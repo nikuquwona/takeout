@@ -1,124 +1,247 @@
-import Image from 'next/image'
-import { Inter } from 'next/font/google'
+'use client'
 
-const inter = Inter({ subsets: ['latin'] })
+import { Button, Link } from "@arco-design/web-react";
+import React, { JSXElementConstructor, Key, ReactElement, ReactFragment, ReactNode, ReactPortal, useEffect, useState } from 'react';
+import { Typography } from '@arco-design/web-react';
+// import { Image } from '@arco-design/web-react';
+import { Image, Space } from '@arco-design/web-react';
+import { Col, Row } from "antd";
+const { Title, Paragraph, Text } = Typography;
+import { Card } from '@arco-design/web-react';
+import Head from "next/head";
+const { Meta } = Card;
+// import { Icon,IconHeart } from '@arco-design/web-react';
+import { IconHeart, IconHeartFill } from '@arco-design/web-react/icon';
+import {useRequest} from '../../hooks/useRequest'
+// import { useRequest } from 'ahooks';
+
+// import { Thrift } from "thrift";
+
+// better have : 
+// id, name ,grade,academy,major,img_src
+
+// const img_url_pre="http://localhost:8080/images/"//image_0_2.jpg
 
 export default function Home() {
-  return (
-    <main className="flex min-h-screen flex-col items-center justify-between p-24">
-      <div className="z-10 w-full max-w-5xl items-center justify-between font-mono text-sm lg:flex">
-        <p className="fixed left-0 top-0 flex w-full justify-center border-b border-gray-300 bg-gradient-to-b from-zinc-200 pb-6 pt-8 backdrop-blur-2xl dark:border-neutral-800 dark:bg-zinc-800/30 dark:from-inherit lg:static lg:w-auto  lg:rounded-xl lg:border lg:bg-gray-200 lg:p-4 lg:dark:bg-zinc-800/30">
-          Get started by editing&nbsp;
-          <code className="font-mono font-bold">src/app/page.tsx</code>
-        </p>
-        <div className="fixed bottom-0 left-0 flex h-48 w-full items-end justify-center bg-gradient-to-t from-white via-white dark:from-black dark:via-black lg:static lg:h-auto lg:w-auto lg:bg-none">
-          <a
-            className="pointer-events-none flex place-items-center gap-2 p-8 lg:pointer-events-auto lg:p-0"
-            href="https://vercel.com?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            By{' '}
-            <Image
-              src="/vercel.svg"
-              alt="Vercel Logo"
-              className="dark:invert"
-              width={100}
-              height={24}
-              priority
-            />
-          </a>
-        </div>
-      </div>
+  // const URL="http://localhost:8080"
+  // const [message, setMessage] = useState<any>();
+  
+  // document.body.setAttribute('arco-theme', 'dark');
+  const [theme,setTheme]=useState<boolean>(true);
+  useEffect(()=>{
+    const darkThemeMq = window.matchMedia("(prefers-color-scheme: dark)");
+    console.log("darkThemeMq",darkThemeMq);
+    if (darkThemeMq.matches){
+      document.body.setAttribute('arco-theme', 'dark');
+      setTheme(false)
+    }
 
-      <div className="relative flex place-items-center before:absolute before:h-[300px] before:w-[480px] before:-translate-x-1/2 before:rounded-full before:bg-gradient-radial before:from-white before:to-transparent before:blur-2xl before:content-[''] after:absolute after:-z-20 after:h-[180px] after:w-[240px] after:translate-x-1/3 after:bg-gradient-conic after:from-sky-200 after:via-blue-200 after:blur-2xl after:content-[''] before:dark:bg-gradient-to-br before:dark:from-transparent before:dark:to-blue-700 before:dark:opacity-10 after:dark:from-sky-900 after:dark:via-[#0141ff] after:dark:opacity-40 before:lg:h-[360px]">
-        <Image
-          className="relative dark:drop-shadow-[0_0_0.3rem_#ffffff70] dark:invert"
-          src="/next.svg"
-          alt="Next.js Logo"
-          width={180}
-          height={37}
-          priority
-        />
-      </div>
+    darkThemeMq.addEventListener('change',e => {
+      if (e.matches) {
+        document.body.setAttribute('arco-theme', 'dark');
+        setTheme(false)
+      } else {
+          document.body.removeAttribute('arco-theme');
+          setTheme(true)
+        }
+      });
+  },[])
 
-      <div className="mb-32 grid text-center lg:mb-0 lg:grid-cols-4 lg:text-left">
-        <a
-          href="https://beta.nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className="group rounded-lg border border-transparent px-5 py-4 transition-colors hover:border-gray-300 hover:bg-gray-100 hover:dark:border-neutral-700 hover:dark:bg-neutral-800/30"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2 className={`${inter.className} mb-3 text-2xl font-semibold`}>
-            Docs{' '}
-            <span className="inline-block transition-transform group-hover:translate-x-1 motion-reduce:transform-none">
-              -&gt;
-            </span>
-          </h2>
-          <p
-            className={`${inter.className} m-0 max-w-[30ch] text-sm opacity-50`}
-          >
-            Find in-depth information about Next.js features and API.
-          </p>
-        </a>
+  const [iconStateLeft,setIconStateLeft]=useState<boolean>(false);
+  const [iconStateRight,setIconStateRight]=useState<boolean>(false);
+  // #232324  
+  const [fresh,setFresh]=useState<boolean>(false);
 
-        <a
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          className="group rounded-lg border border-transparent px-5 py-4 transition-colors hover:border-gray-300 hover:bg-gray-100 hover:dark:border-neutral-700 hover:dark:bg-neutral-800 hover:dark:bg-opacity-30"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2 className={`${inter.className} mb-3 text-2xl font-semibold`}>
-            Learn{' '}
-            <span className="inline-block transition-transform group-hover:translate-x-1 motion-reduce:transform-none">
-              -&gt;
-            </span>
-          </h2>
-          <p
-            className={`${inter.className} m-0 max-w-[30ch] text-sm opacity-50`}
-          >
-            Learn about Next.js in an interactive course with&nbsp;quizzes!
-          </p>
-        </a>
+  const { loading, result, error } = useRequest(`/message`,{},{method:'post'});
+  
+  const { loading:loading_get_girl, result:result_get_girl, error:error_get_girl } = useRequest(`/api/get_girl`,{},{method:'post',refresh:fresh});//,manual:true,ready});
+  // /compare_girl
+  const [ready,setReady]=useState<boolean>(false);
+  const [data,setData]=useState<any>();
+  const { result:result_compare_girl} = useRequest(`/api/compare_girl`,data,{method:'post',manual:true,ready:ready});
+  
+  const srcList_default = [
+    '//p1-arco.byteimg.com/tos-cn-i-uwbnlip3yd/a8c8cdb109cb051163646151a4a5083b.png~tplv-uwbnlip3yd-webp.webp',
+    '//p1-arco.byteimg.com/tos-cn-i-uwbnlip3yd/e278888093bef8910e829486fb45dd69.png~tplv-uwbnlip3yd-webp.webp',
+    ];
+  const [srcList,setSrcList]=useState<any>(srcList_default)
+  
+  useEffect(() => {
+    console.log("result_get_girl",result_get_girl)
+    
+    if (result_get_girl!=null){
+      var src = [];
+      src.push(result_get_girl[0]?.imageUrl)
+      src.push(result_get_girl[1]?.imageUrl)
+      setSrcList(src)
+      console.log("src",srcList)
+      setIconStateLeft(false)
+      setIconStateRight(false)
+    }
+  },[result_get_girl])
+  
+  const handleOnClick = (index: number) => { 
+    // do something here
+    if (index==0){
+      setIconStateLeft(iconStateLeft=>!iconStateLeft)
+      // setData(result_get_girl[0]?.id)
+      var a=[]
+      a.push(result_get_girl[0]?.id)
+      a.push(result_get_girl[1]?.id)
+      // var b={}
+      var b={"id1":a[0],"id2":a[1]}
+      // b={'peoples':a}
+      setData(b)
+    
+    }else{
+      setIconStateRight(iconStateRight=>!iconStateRight)
+      var a=[]
+      a.push(result_get_girl[1]?.id)
+      a.push(result_get_girl[0]?.id)
+      // var b={}
+      var b={"id1":a[0],"id2":a[1]}
+      // b={'peoples':a}
+      setData(b)
+    }
 
-        <a
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className="group rounded-lg border border-transparent px-5 py-4 transition-colors hover:border-gray-300 hover:bg-gray-100 hover:dark:border-neutral-700 hover:dark:bg-neutral-800/30"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2 className={`${inter.className} mb-3 text-2xl font-semibold`}>
-            Templates{' '}
-            <span className="inline-block transition-transform group-hover:translate-x-1 motion-reduce:transform-none">
-              -&gt;
-            </span>
-          </h2>
-          <p
-            className={`${inter.className} m-0 max-w-[30ch] text-sm opacity-50`}
-          >
-            Explore the Next.js 13 playground.
-          </p>
-        </a>
+    // setData(result_get_girl)
+    setReady(true)
+    console.log("ready",ready,"data",data)
+    // window.location.reload()
+    // const { result:result_get_repeat} = useRequest(`/api/get_girl`,{},{method:'post'});
+    // setTimeout(() => {
+    //   setCount(prev => prev + 1);
+    // }, 1000);
+    setTimeout(() => {
+      if(fresh){
+        setFresh(false)
+      }else{
+        setFresh(true)
+      }
+      setReady(false)
+    }, 200);
+    
+    // setIconStateLeft(false)
+    // setIconStateRight(false)
+  };
+  // useEffect(()=>{},[srcList,iconStateLeft,iconStateRight])
+   
 
-        <a
-          href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className="group rounded-lg border border-transparent px-5 py-4 transition-colors hover:border-gray-300 hover:bg-gray-100 hover:dark:border-neutral-700 hover:dark:bg-neutral-800/30"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2 className={`${inter.className} mb-3 text-2xl font-semibold`}>
-            Deploy{' '}
-            <span className="inline-block transition-transform group-hover:translate-x-1 motion-reduce:transform-none">
-              -&gt;
-            </span>
-          </h2>
-          <p
-            className={`${inter.className} m-0 max-w-[30ch] text-sm opacity-50`}
-          >
-            Instantly deploy your Next.js site to a shareable URL with Vercel.
-          </p>
-        </a>
-      </div>
-    </main>
-  )
+
+
+
+  return (<>
+  {/* {image_group(fresh)} */}
+  {/* <div>
+      <p>loading: {loading}</p>
+      <p>{JSON.stringify(result)}</p>
+      <p>{result?.msg}</p>
+      <p>{JSON.stringify(result_get_girl)}</p>
+     
+  </div> */}
+
+  <div>
+      {/* <Head>
+        <title>Next App</title>
+        <link rel="icon" href="/favicon.ico" />
+      </Head> */}
+    <Row justify='center'>
+    {/* <Typography.Title>Face Mash</Typography.Title> */}
+    <h1>
+      Face Mash
+    </h1>
+    </Row>
+    {/* <Title>{message}</Title> */}
+    {/* <Button type="primary">Hello Arco</Button> */}
+    {/* <Row justify='center'>
+    <Col span={12}>
+    <Image
+      width={200}
+      src='//p1-arco.byteimg.com/tos-cn-i-uwbnlip3yd/a8c8cdb109cb051163646151a4a5083b.png~tplv-uwbnlip3yd-webp.webp'
+      alt='lamp'
+    />
+    </Col>
+    <Col span={12}>
+    <Image
+      width={200}
+      src='//p1-arco.byteimg.com/tos-cn-i-uwbnlip3yd/a8c8cdb109cb051163646151a4a5083b.png~tplv-uwbnlip3yd-webp.webp'
+      alt='lamp'
+    />
+    </Col>
+    </Row> */}
+    <Row justify='center'>
+      
+    <Space direction='vertical'>
+        <Image.PreviewGroup infinite>
+          <Space size='large'>
+            {srcList.map((src: any, index: any) => {
+              // eslint-disable-next-line react/jsx-key
+            
+              return (
+              <>
+                <Card
+                  hoverable
+                  cover={<div><Image key={index} src={src} title={'Student ID:~'} width={382} alt={`lamp${index + 1}`} /></div>}>
+                  <Meta
+
+                    description={<>
+                    
+                      <Row >
+                        <Col>
+                        <Typography.Text bold>Name:~</Typography.Text> 
+                        <br />
+                        <Typography.Text bold>Grade:~</Typography.Text>
+                        <br />
+                        <Typography.Text bold>Academy:~</Typography.Text>
+                        <br />
+                        <Typography.Text bold>Major:~</Typography.Text>
+                        </Col>
+                        <Col span={16}></Col>
+                      <Col>
+                      <Button style={{ fontSize: 24, marginBottom: 0 ,backgroundColor:theme?"color(srgb 1 1 1)":"#232324"}} onClick={()=>handleOnClick(index)} 
+                        icon={
+                          index==0?
+                          (iconStateLeft?<IconHeartFill  style={{color:"color(srgb 0.94 0.12 0.12)"}}/> : <IconHeart  />)
+                          :
+                          (iconStateRight?<IconHeartFill  style={{color:"color(srgb 0.94 0.12 0.12)"}}/> : <IconHeart  />)
+                        } 
+                      />
+                      </Col>
+                      </Row>
+                      
+                      
+                    </>} />
+                </Card>
+                {/* <Button onClick={handleOnClick(index)} 
+                icon={
+                  index==0?
+                  (iconStateLeft?<IconHeartFill style={{ fontSize: 24, marginBottom: 0 }} /> : <IconHeart style={{ fontSize: 24, marginBottom: 0 }} />)
+                  :
+                  (iconStateRight?<IconHeartFill style={{ fontSize: 24, marginBottom: 0 }} /> : <IconHeart style={{ fontSize: 24, marginBottom: 0 }} />)
+                } 
+                /> */}
+                
+                {/* <IconHeart style={{ fontSize: 24, marginRight: 20 }} /> */}
+                </>)
+              
+                    })}
+          </Space>
+        </Image.PreviewGroup>
+      </Space>
+      </Row>
+    {/* <h2 className={`${inter.className}`}>
+      hello react next!!! */}
+
+    
+    <Row justify='center'>
+    {/* <Typography.Title>Face Mash</Typography.Title> */}
+    <h1>
+      Just Choose
+    </h1>
+    </Row>
+    </div>
+  </>)
+}
+function sleep(ms: number | undefined) {
+  return new Promise(resolve => setTimeout(resolve, ms));
 }
