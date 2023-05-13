@@ -5,7 +5,7 @@ export const useRequest = (url: string, data?: any, config?: any) => {
     const [loading, setLoading] = useState(true);
     const [result, setResult] = useState<any>();
     const [error, setError] = useState<any>();
-    const URL="http://localhost:8080"+url
+    const URL="http://localhost:8080"+url // when uploda need change 
     const request = async () => {
     console.log(URL)
     setLoading(true);
