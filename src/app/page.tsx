@@ -13,6 +13,7 @@ const { Meta } = Card;
 // import { Icon,IconHeart } from '@arco-design/web-react';
 import { IconHeart, IconHeartFill } from '@arco-design/web-react/icon';
 import {useRequest} from '../../hooks/useRequest'
+import Navi from "./navi";
 // import { useRequest } from 'ahooks';
 
 // import { Thrift } from "thrift";
@@ -141,6 +142,7 @@ export default function Home() {
   </div> */}
 
   <div>
+    <Navi/>
       {/* <Head>
         <title>Next App</title>
         <link rel="icon" href="/favicon.ico" />
@@ -181,7 +183,7 @@ export default function Home() {
               <>
                 <Card
                   hoverable
-                  cover={<div><Image key={index} src={src} title={'Student ID:~'} width={382} alt={`lamp${index + 1}`} /></div>}>
+                  cover={<div><Image key={index} src={src} title={'Student ID:~'} width={600} alt={`lamp${index + 1}`} /></div>}>
                   <Meta
 
                     description={<>

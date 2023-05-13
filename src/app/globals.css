@@ -38,3 +38,20 @@ body {
     background:rgb(22, 22, 23);/*rgba(22, 22, 23, .8);*/
   }
 }
+.menu-demo {
+  box-sizing: border-box;
+  width: 100%;
+  padding: auto;
+  /* background-color: var(--color-neutral-2); */
+}
+
+.menu-demo .arco-menu-inner {
+  overflow-y: auto;
+}
+
+.arco-modal-content {
+  position: relative;
+  padding: 0px 0px;
+  color: var(--color-text-1);
+  font-size: 14px;
+}
