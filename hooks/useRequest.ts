@@ -6,6 +6,7 @@ export const useRequest = (url: string, data?: any, config?: any) => {
     const [result, setResult] = useState<any>();
     const [error, setError] = useState<any>();
     const URL="http://localhost:8080"+url // when uploda need change 
+    // const URL="http://129.226.83.165:8080"+url 
     const request = async () => {
     console.log(URL)
     setLoading(true);
