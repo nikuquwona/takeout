@@ -53,20 +53,69 @@ const columns: TableColumnProps[] = [
     dataIndex: 'name',
   },
   {
-    title: '收款方ID',
+    title: '交易时间',
     dataIndex: 'salary',
   },
   {
-    title: '交易量',
+    title: '交易金额',
     dataIndex: 'address',
-  }
+  },
+  {
+    title: '交易类型',
+    dataIndex: 'address2',
+  },
+  {
+    title: 'Operation',
+    dataIndex: 'op',
+    render: (_, record) => (
+      <>
+      <Button type='primary'>
+        查看详情
+      </Button>
+      
+      </>
+    ),
+  },
+
+  //交易ID	交易时间	交易金额	交易类型
+	// 查看详情
 ];
 const table_data = [
   {
     key: '1',
-    name: '1037135',
-    salary: '7653889',
+    name: '0x5b4c4f8a8f8c8c4c4b4f8b8c8a8c4c4f8b8c4f8a8c8c4c4f8b8c4f8a8c8c4c',
+    salary: '2023/5/31',
     address: '15',
+    address2: '跨链',
+
+  },{
+    key: '2',
+    name: '0x2c0c7e0b5c5a8c00e3f0a9f67d1e2f7c0a7d4b7d4d1c6a9a1c7e0b5c5a8c00e',
+    salary: '2023/5/23',
+    address: '25',
+    address2: '跨链',
+
+  },{
+    key: '3',
+    name: '0x8c4f8a8c4f8b8c4f8a8c8c4f8a8c8c4f8b8c4f8a8c8c4f8a8c8c4f8b8c4f8a',
+    salary: '2023/5/1',
+    address: '10',
+    address2: '跨链',
+
+  },{
+    key: '4',
+    name: '0x4f8a8c8b8c8b8c4f8a8c8b8c8b8c4f8a8c8b8c8b8c4f8a8c8b8c8b8c4f8a8c',
+    salary: '2023/5/2',
+    address: '17',
+    address2: '本链',
+
+  },{
+    key: '5',
+    name: '0x8c4f8b8c4f8a8c8c4f8b8c4f8a8c8c4f8b8c4f8a8c8c4f8b8c4f8a8c8c4f8b',
+    salary: '2023/5/1',
+    address: '9',
+    address2: '本链',
+
   }
 ];
 function success() {

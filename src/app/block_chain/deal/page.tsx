@@ -20,6 +20,9 @@ const SubMenu = Menu.SubMenu;
 import { Descriptions } from '@arco-design/web-react';
 const InputSearch = Input.Search;
 import { InputNumber } from '@arco-design/web-react';
+import { Radio, Message } from '@arco-design/web-react';
+// import { Radio } from '@arco-design/web-react';
+const RadioGroup = Radio.Group;
 const data = [
   {
     label: '用户名',
@@ -111,7 +114,7 @@ export default function Block_chain3() {
             </MenuItem>
             <MenuItem key='1'><Link href={"/block_chain/"}>Home</Link></MenuItem>
             <MenuItem key='2'><Link href={"/block_chain/userinfo"}>UserInfo</Link></MenuItem>
-            <MenuItem key='3'><Link href={"/block_chain/dealsearch"}>Deal Search</Link></MenuItem>
+            <MenuItem key='3'><Link href={"/block_chain/deal"}>Deal Search</Link></MenuItem>
             <MenuItem key='4'><Link href={"/block_chain/usersearch"}>User Search</Link></MenuItem>
             {/* <MenuItem key='3'><Link href={"./block_chain/dealsearch"}>Deal Search</Link></MenuItem>
             <MenuItem key='4'><Link href={"./block_chain/usersearch"}>User Search</Link></MenuItem> */}
@@ -195,10 +198,24 @@ export default function Block_chain3() {
 
       
       <Form style={{ width: 600 }} autoComplete='off'>
-                        <FormItem label='交易对象公钥'>
+                        <FormItem label='接收方地址'>
                             <Input placeholder='please enter key string...' />
                         </FormItem>
-                        <FormItem label='交易金额'>
+                        <FormItem label='目标省份' >
+                          <Space size={40}>
+                          <RadioGroup defaultValue='b' style={{ marginBottom: 20 }}>
+                            <Radio value='a'>跨省</Radio>
+                            <Radio value='b'>
+                              不跨省
+                            </Radio>
+                          </RadioGroup>
+                          </Space>
+                            <Input placeholder='please enter key string...' />
+                        </FormItem>
+                        <FormItem label='公证人地址'>
+                            <Input placeholder='please enter key string...' />
+                        </FormItem>
+                        <FormItem label='交易积分数额'>
                             {/* <Input placeholder='please enter number...' /> */}
                             <InputNumber
                             //  placeholder='please enter number...'
