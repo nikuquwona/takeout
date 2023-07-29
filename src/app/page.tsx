@@ -14,8 +14,14 @@ const { Meta } = Card;
 import { IconHeart, IconHeartFill } from '@arco-design/web-react/icon';
 import {useRequest} from '../../hooks/useRequest'
 import Navi from "./navi";
-// import { useRequest } from 'ahooks';
 
+
+import SockJS from 'sockjs-client';
+// import { Client } from 'stompjs';
+import { Client } from '@stomp/stompjs';
+
+// import { useRequest } from 'ahooks';
+// import './ChatComponent.css'; // 引入 CSS 文件
 // import { Thrift } from "thrift";
 
 // better have : 
@@ -131,6 +137,8 @@ export default function Home() {
 
 
 
+
+
   return (<>
   {/* {image_group(fresh)} */}
   {/* <div>
@@ -149,6 +157,7 @@ export default function Home() {
       </Head> */}
     <Row justify='center'>
     {/* <Typography.Title>Face Mash</Typography.Title> */}
+    
     <h1>
       Face Mash
     </h1>
@@ -240,6 +249,10 @@ export default function Home() {
     <h1>
       Just Choose
     </h1>
+    
+    </Row>
+    <Row justify='center'>
+      <ChatComponent/>
     </Row>
     </div>
   </>)
@@ -247,3 +260,161 @@ export default function Home() {
 function sleep(ms: number | undefined) {
   return new Promise(resolve => setTimeout(resolve, ms));
 }
+
+  //web socket
+
+function ChatComponent() {
+  // const [stompClient, setStompClient] = useState(null);
+  const [stompClient, setStompClient] = useState<Client | null>(null);
+  const [viewMessage,setViewMessage]=useState('')
+  // const [messages, setMessages] = useState<string[]>([]);
+
+  const [messages, setMessages] = useState<{ sender: string, content: string ,timestamp: string}[]>([]);
+  const [username, setUsername] = useState<string | null>(null);
+  const [tempUsername, setTempUsername] = useState(''); // 新增的状态变量
+
+
+  useEffect(() => {
+      // ... WebSocket setup code ...
+
+      const socket = new SockJS('http://localhost:8080/chat');    
+      const client = new Client({
+          webSocketFactory: () => socket,
+          onConnect: (frame) => {
+              console.log('Connected:', frame);
+              client.subscribe('/topic/messages', (message) => {
+                console.log(message.body);
+                // setMessages(prev => [...prev, message.body]);
+                const msg = JSON.parse(message.body);
+                setMessages(prev => [...prev, msg]);
+              });
+          }
+      });
+      client.activate();
+      setStompClient(client);
+      
+ 
+      // Fetch chat history
+      fetch('http://localhost:8080/history')
+      .then(response => response.json())
+      .then(data => {
+          setMessages(data);
+      });
+      
+      return () => {
+        if (client.connected) {
+            client.deactivate();
+            console.log("connected")
+        }else{
+          console.log("unconnected")
+        }
+      };
+    }, []);
+
+  // const sendMessage = (message: any) => {
+  //     if (stompClient && stompClient.connected) {
+  //         stompClient.publish({ destination: "/app/send", body: message });
+  //     }
+  //     console.log(message)
+  //     console.log('message send!!!')
+  // };
+  const sendMessage = () => {
+    // if (stompClient && stompClient.connected) {
+    //     stompClient.publish({ destination: "/app/send", body: viewMessage });
+    //     setViewMessage('');
+    // }
+    if (stompClient && stompClient.connected && username) {
+      const messageObj = {
+
+          sender: username,
+          content: viewMessage
+
+      };
+      // stompClient.publish({ destination: "/app/send", body: JSON.stringify(messageObj) });
+      stompClient.publish({ destination: "/app/send", body: JSON.stringify(messageObj) });
+      setViewMessage('');
+  }
+};
+// if (!username) {
+//   return (
+//       <div className="login-container">
+//           <input 
+//               placeholder="Enter your name..."
+//               onChange={(e) => setUsername(e.target.value)}
+//           />
+//           <button onClick={() => setUsername(username)}>Join Chat</button>
+//       </div>
+//   );
+// }
+if (!username) {
+  return (
+    <>
+     <div className="chat-container">
+      <div className="chat-messages">
+           {messages.map((msg, index) => (
+               <div key={index} className="message">
+                   {/* {msg} */}
+                   <strong>{msg.sender}:</strong> {msg.content}
+                   <div className="message-timestamp">
+                        {new Date(msg.timestamp).toLocaleString()}
+                    </div>
+               </div>
+           ))}
+       </div>
+       
+       <div className="chat-input-login">
+       {/* <div className="login-container"> */}
+        <textarea 
+              placeholder="Enter your name..."
+              value={tempUsername} // 使用 tempUsername 作为输入值
+              onChange={(e) => setTempUsername(e.target.value)} // 更新 tempUsername 而不是 username
+          ></textarea>
+          <button onClick={() => setUsername(tempUsername)}>Join Chat</button> 
+          {/* // 点击按钮时设置 username */}
+      </div>
+      </div>
+    </>
+      
+  );
+}
+  return (
+      // ... UI components and sendMessage usage
+    <>
+    {/* <Row justify='center'> */}
+      {/* <div>
+          <textarea 
+            placeholder="Type your message here..." 
+            value={viewMessage}
+            onChange={(e) => setViewMessage(e.target.value)}
+        ></textarea>
+<button onClick={() => sendMessage(viewMessage)}>Send</button>
+      </div> */}
+
+{/* // */}
+       <div className="chat-container">
+       <div className="chat-messages">
+           {messages.map((msg, index) => (
+               <div key={index} className="message">
+                   {/* {msg} */}
+                   <strong>{msg.sender}:</strong> {msg.content}
+                   <div className="message-timestamp">
+                        {new Date(msg.timestamp).toLocaleString()}
+                    </div>
+               </div>
+           ))}
+       </div>
+       <div className="chat-input">
+           <textarea 
+               placeholder="Type your message here..." 
+               value={viewMessage}
+               onChange={(e) => setViewMessage(e.target.value)}
+           ></textarea>
+
+           <button onClick={sendMessage}>Send</button>
+       </div>
+   </div>
+   {/* </Row> */}
+   </>
+  );
+}
+
