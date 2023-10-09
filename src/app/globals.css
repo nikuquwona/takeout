@@ -209,3 +209,21 @@ body {
 .message-timestamp:hover {
   color: #666;                /* 设置鼠标悬停时的字体颜色为稍深的灰色 */
 }
+.map {
+  width: 600px;
+  height: 400px;
+  background-color: #333; /* 深灰背景颜色 */
+  position: relative;
+}
+
+.marker {
+  width: 20px;
+  height: 20px;
+  background-color: red;
+  color: white;
+  border-radius: 50%;
+  text-align: center;
+  line-height: 20px;
+  position: absolute;
+  transform: translate(-50%, -50%);
+}

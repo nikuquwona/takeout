@@ -1,6 +1,6 @@
 'use client'
 
-import { Button, Link } from "@arco-design/web-react";
+import { Button, Link, Modal } from "@arco-design/web-react";
 import React, { JSXElementConstructor, Key, ReactElement, ReactFragment, ReactNode, ReactPortal, useEffect, useState } from 'react';
 import { Typography } from '@arco-design/web-react';
 // import { Image } from '@arco-design/web-react';
@@ -14,12 +14,22 @@ const { Meta } = Card;
 import { IconHeart, IconHeartFill } from '@arco-design/web-react/icon';
 import {useRequest} from '../../hooks/useRequest'
 import Navi from "./navi";
-
+import { Client  as app_client ,Account,ID} from 'appwrite';
 
 import SockJS from 'sockjs-client';
 // import { Client } from 'stompjs';
 import { Client } from '@stomp/stompjs';
 
+
+import { Form, Input, Checkbox } from '@arco-design/web-react';
+const FormItem = Form.Item;
+import { Tabs } from '@arco-design/web-react';
+const TabPane = Tabs.TabPane;
+import { Menu } from '@arco-design/web-react';
+const MenuItem = Menu.Item;
+const SubMenu = Menu.SubMenu;
+import Login from './login'
+import Register from "./register";
 // import { useRequest } from 'ahooks';
 // import './ChatComponent.css'; // 引入 CSS 文件
 // import { Thrift } from "thrift";
@@ -29,7 +39,80 @@ import { Client } from '@stomp/stompjs';
 
 // const img_url_pre="http://localhost:8080/images/"//image_0_2.jpg
 
+function success() {
+  Modal.success({
+    title: '登录成功',
+  });
+}
+function success2() {
+  Modal.success({
+    title: '注册成功',
+  });
+}
+
 export default function Home() {
+
+  // app write
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [isLogged, setIsLogged] = useState(false);
+  useEffect(() => {
+    // const client = new app_client();
+    // client
+    //   // .setEndpoint('YOUR_APPWRITE_ENDPOINT') // 设置你的 Appwrite 服务器地址
+    //   // .setProject('YOUR_PROJECT_ID'); // 设置你的项目 ID
+
+    //   .setEndpoint('https://cloud.appwrite.io/v1')
+    //   .setProject('651eb121b08c1e77f024');
+    // const account = new Account(client);
+
+    // 接下来，你可以使用 client 对象进行各种操作，比如用户认证、数据库操作等。
+    // const promise = account.get();
+
+    // promise.then(function (response) {
+    //     console.log(response);
+    // }, function (error) {
+    //     console.log(error);
+    // });
+    // const promise = account.create('[USER_ID]', 'email@example.com', '');
+    // const promise = account.create('ID.unique()', 'email@example.com', '123456789');
+    
+    
+    // //ID.unique()
+    // promise.then(function (response) {
+    //     console.log(response); // Success
+    // }, function (error) {
+    //     console.log(error); // Failure
+    // });
+  //   const handleRegister = async () => {
+  //     try {
+  //       const response = await account.create(email, password);
+  //       console.log('Registration successful', response);
+  //       setIsLogged(true);
+  //     } catch (error) {
+  //       console.error('An error occurred during registration', error);
+  //     }
+  //   };
+  
+  //   const handleLogin = async () => {
+  //     try {
+  //       const response = await account.createSession(email, password);
+  //       console.log('Login successful', response);
+  //       setIsLogged(true);
+  //     } catch (error) {
+  //       console.error('An error occurred during login', error);
+  //     }
+  //   };
+  }, []);
+
+
+
+  // app write
+
+
+
+
+
   // const URL="http://localhost:8080"
   // const [message, setMessage] = useState<any>();
   
@@ -140,16 +223,10 @@ export default function Home() {
 
 
   return (<>
-  {/* {image_group(fresh)} */}
-  {/* <div>
-      <p>loading: {loading}</p>
-      <p>{JSON.stringify(result)}</p>
-      <p>{result?.msg}</p>
-      <p>{JSON.stringify(result_get_girl)}</p>
-     
-  </div> */}
 
-  <div>
+<div><Login/></div>
+<div><Register/></div>
+    <div>
     <Navi/>
       {/* <Head>
         <title>Next App</title>
@@ -255,6 +332,53 @@ export default function Home() {
       <ChatComponent/>
     </Row>
     </div>
+    <div>
+   <Tabs defaultActiveTab='1'>
+                <TabPane key='1' title='登陆'>
+                    {/* <Typography.Paragraph >Content of Tab Panel 1</Typography.Paragraph> */}
+                    <Form style={{ width: 600 }} autoComplete='off'>
+                        <FormItem label='Username'>
+                            <Input placeholder='please enter your username...' />
+                        </FormItem>
+                        <FormItem label='Password'>
+                            <Input placeholder='please enter your Password...' />
+                        </FormItem>
+                        {/* <FormItem wrapperCol={{ offset: 5 }}>
+                            <Checkbox>I have read the manual</Checkbox>
+                        </FormItem> */}
+                        <FormItem wrapperCol={{ offset: 5 }}>
+                            <Button type='primary'  onClick={success}>
+                                login
+                            </Button>
+                        </FormItem>
+                    </Form>
+                </TabPane>
+
+                <TabPane key='2' title='注册'>
+                    {/* <Typography.Paragraph >Content of Tab Panel 2</Typography.Paragraph> */}
+                    <Form style={{ width: 600 }} autoComplete='off'>
+                        <FormItem label='Username'>
+                            <Input placeholder='please enter your username...' />
+                        </FormItem>
+                        <FormItem label='Password'>
+                            <Input placeholder='please enter your Password...' />
+                        </FormItem>
+                        <FormItem label='Password'>
+                            <Input placeholder='please confirm your Password again...' />
+                        </FormItem>
+                        <FormItem wrapperCol={{ offset: 5 }}>
+                            <Checkbox>I have read the manual</Checkbox>
+                        </FormItem>
+                        <FormItem wrapperCol={{ offset: 5 }}>
+                            {/* <Button type='primary'>Submit</Button> */}
+                            <Button type='primary'  onClick={success2}>
+                                sign up
+                            </Button>
+                        </FormItem>
+                    </Form>
+                </TabPane>
+            </Tabs>
+   </div>
   </>)
 }
 function sleep(ms: number | undefined) {
@@ -319,6 +443,7 @@ function ChatComponent() {
   //     console.log('message send!!!')
   // };
   const sendMessage = () => {
+
     // if (stompClient && stompClient.connected) {
     //     stompClient.publish({ destination: "/app/send", body: viewMessage });
     //     setViewMessage('');
@@ -413,6 +538,7 @@ if (!username) {
            <button onClick={sendMessage}>Send</button>
        </div>
    </div>
+   
    {/* </Row> */}
    </>
   );

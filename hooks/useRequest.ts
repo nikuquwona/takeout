@@ -1,11 +1,16 @@
 import { useEffect, useState } from "react";
+
 import axios from 'axios'
 
-export const useRequest = (url: string, data?: any, config?: any) => {
+export const useRequest = (url: string, data?: any, config?: any,prev?:any) => {
     const [loading, setLoading] = useState(true);
     const [result, setResult] = useState<any>();
     const [error, setError] = useState<any>();
-    const URL="http://localhost:8080"+url // when uploda need change 
+    
+    var URL="http://localhost:8080"+url // when uploda need change 
+    if (prev!=null){
+      URL=prev+url;
+    }
     // const URL="http://129.226.83.165:8080"+url 
     const request = async () => {
     console.log(URL)
@@ -24,7 +29,11 @@ export const useRequest = (url: string, data?: any, config?: any) => {
             url:URL,
             params: data,
             method: config.method,//'post',
-            headers:{mode: 'cors','Access-Control-Allow-Origin':"*",'Access-Control-Allow-Methods':"DELETE, POST, GET, OPTIONS","Access-Control-Allow-Headers":"Content-Type, Authorization, X-Requested-With"}
+            headers:{mode: 'cors',
+            'Content-Type': 'application/json',
+            'Access-Control-Allow-Origin':"*",
+            'Access-Control-Allow-Methods':"DELETE, POST, GET, OPTIONS",
+            "Access-Control-Allow-Headers":"Authorization, X-Requested-With"}
           });
           // header.Add("Access-Control-Allow-Origin", "*")
             // header.Add("Access-Control-Allow-Methods", "DELETE, POST, GET, OPTIONS")
